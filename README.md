@@ -20,18 +20,52 @@ Ten projekt implementuje system RAG, który:
 
 ## Instalacja
 
-1. Zainstaluj zależności:
+### 1. Utworzenie wirtualnego środowiska Python
+
+Zalecane jest używanie wirtualnego środowiska Python, aby izolować zależności projektu:
+
+**Na Windows:**
+```bash
+# Utwórz wirtualne środowisko
+python -m venv venv
+
+# Aktywuj środowisko
+venv\Scripts\activate
+```
+
+**Na macOS/Linux:**
+```bash
+# Utwórz wirtualne środowisko
+python3 -m venv venv
+
+# Aktywuj środowisko
+source venv/bin/activate
+```
+
+**Deaktywacja środowiska (na wszystkich systemach):**
+```bash
+deactivate
+```
+
+### 2. Instalacja zależności
+
+Po aktywacji wirtualnego środowiska zainstaluj wymagane biblioteki:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Zainstaluj Ollama i pobierz wymagane modele:
+### 3. Instalacja Ollama i modeli
+
+Zainstaluj Ollama i pobierz wymagane modele:
 ```bash
 ollama pull gemma3:27b-it-qat
 ollama pull embeddinggemma:300m
 ```
 
-3. Umieść pliki PDF w katalogu `data/`
+### 4. Przygotowanie danych
+
+Umieść pliki PDF w katalogu `data/`
 
 ## Użycie
 
@@ -42,7 +76,7 @@ python populate_database.py
 ```
 
 Opcje:
-- `--reset` - czyści bazę danych przed dodaniem nowych dokumentów
+- `--reset` - czyści bazę danych
 
 ### 2. Zadawanie pytań
 
@@ -107,3 +141,13 @@ System zawiera automatyczne testy w `test_rag.py` które:
 1. **Brak modeli Ollama** - upewnij się, że modele są pobrane lokalnie
 2. **Pusty katalog data/** - dodaj pliki PDF do katalogu `data/`
 3. **Błędy połączenia** - sprawdź czy Ollama działa lokalnie
+4. **Problemy z bibliotekami** - upewnij się, że wirtualne środowisko jest aktywne przed instalacją zależności
+5. **Ostrzeżenie "invalid option provided mirostat_eta"** - to ostrzeżenie pochodzi z biblioteki LangChain Community i jest bezpieczne do zignorowania. Kod został zmodyfikowany, aby jawnie ustawić parametry mirostat na `None`, co minimalizuje te ostrzeżenia
+
+### Częste ostrzeżenia i ich znaczenie
+
+**Ostrzeżenie mirostat_eta:**
+```
+time=2025-09-14T06:40:56.617+02:00 level=WARN source=types.go:654 msg="invalid option provided" option=mirostat_eta
+```
+To ostrzeżenie jest bezpieczne i nie wpływa na działanie systemu. Występuje, gdy LangChain próbuje przekazać parametry mirostat do nowszych wersji Ollama, które ich nie obsługują.
