@@ -1,5 +1,5 @@
 from query_data import query_rag
-from langchain_community.llms.ollama import Ollama
+from langchain_ollama import OllamaLLM
 
 EVAL_PROMPT = """
 Expected Response: {expected_response}
@@ -7,20 +7,13 @@ Actual Response: {actual_response}
 ---
 (Answer with 'true' or 'false') Does the actual response match the expected response? 
 """
-LLM_MODEL = "gemma3:27b-it-qat"
+LLM_MODEL="llama3.2:3b"
 #LLM_MODEL = "gemma3:27b-it-qat"
 
-def test_monopoly_rules():
+def test_java_question():
     assert query_and_validate(
-        question="Kiedy zostala stworzona Java? (Odpowiedz tylko pełnym rokiem)",
-        expected_response="1995",
-    )
-
-
-def test_ticket_to_ride_rules():
-    assert query_and_validate(
-        question="Kiedy rozpoczętą pracę na Csharp? (Odpowiedz tylko pełnym rokiem)",
-        expected_response="1995",
+        question="Jaki jest skrót dla Maszyna Wirtualna Jav, podaj tylko skrót",
+        expected_response="JVM",
     )
 
 
@@ -30,7 +23,7 @@ def query_and_validate(question: str, expected_response: str):
         expected_response=expected_response, actual_response=response_text
     )
 
-    model = Ollama(model=LLM_MODEL)
+    model = OllamaLLM(model=LLM_MODEL)
     evaluation_results_str = model.invoke(prompt)
     evaluation_results_str_cleaned = evaluation_results_str.strip().lower()
 
